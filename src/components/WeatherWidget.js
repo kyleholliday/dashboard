@@ -56,7 +56,7 @@ const WeatherWidget = () => {
   };
 
   return (
-    <div className="weather-widget max-h-72 overflow-y-auto bg-white rounded-xl shadow-xl py-6 px-6 mb-4">
+    <div className="weather-widget max-h-76 overflow-y-auto bg-white rounded-xl shadow-xl py-6 px-6 mb-4">
       {error ? (
         <p>{error}</p>
       ) : weather ? (
@@ -78,47 +78,34 @@ const WeatherWidget = () => {
               {weather.location.name}, {weather.location.region}
             </h2>
           </span>
-          <div className="divide-y divide-gray-300/50">
-            <div className="flex">
-              <div className="w-48">
-                <p className="text-9xl font-bold mt-3 flex">
-                  <span>{Math.round(weather.current.temp_f)}</span>
-                  <span className="text-lg font-bold">&deg; F</span>
-                </p>
-              </div>
-              <div className="flex-grow items-center flex flex-col justify-center">
-                {/* <img
+          <div className="flex">
+            <div className="w-48">
+              <p className="text-9xl font-bold mt-3 flex">
+                <span>{Math.round(weather.current.temp_f)}</span>
+                <span className="text-lg font-bold">&deg; F</span>
+              </p>
+            </div>
+            <div className="flex-grow items-center flex flex-col justify-center">
+              {/* <img
                   src={weather.current.condition.icon}
                   alt={weather.current.condition.text}
                 /> */}
-                <p className="font-medium">{weather.current.condition.text}</p>
-                <span className="flex mt-2 rounded-xl p-2 border-blue-200 border">
-                  <p className="flex items-center font-medium">
-                    <span>↑</span>
-                    {Math.round(weather.forecast.forecastday[0]?.day.maxtemp_f)}
-                    &deg;
-                  </p>
-                  <p className="flex ml-2 items-center font-medium">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      className="size-4"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3"
-                      />
-                    </svg>
-                    {Math.round(weather.forecast.forecastday[0].day.mintemp_f)}
-                    &deg;
-                  </p>
-                </span>
-              </div>
+              <span className="flex mt-2 rounded-xl p-2 border-blue-200 border">
+                <p className="flex text-xl items-center font-medium">
+                  <span>↑</span>
+                  {Math.round(weather.forecast.forecastday[0]?.day.maxtemp_f)}
+                  &deg;
+                </p>
+                <p className="flex text-xl ml-2 items-center font-medium">
+                  <span>↓</span>
+                  {Math.round(weather.forecast.forecastday[0].day.mintemp_f)}
+                  &deg;
+                </p>
+              </span>
             </div>
+          </div>
+          <div className="divide-y divide-gray-300/50">
+            <p className="font-medium">{weather.current.condition.text}</p>
             {/* bottom  */}
             <div className="flex justify-evenly pt-2 mt-4">
               <div className="flex flex-col items-center">
