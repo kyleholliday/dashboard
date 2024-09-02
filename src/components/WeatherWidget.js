@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const WeatherWidget = () => {
   const [weather, setWeather] = useState(null);
-  const apiKey = 'c66757901117465a86e41520243108';
+  const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
   const [city, setCity] = useState(localStorage.getItem('city') || null); // Check local storage for city
   const [error, setError] = useState(null);
 

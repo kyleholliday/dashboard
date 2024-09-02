@@ -4,20 +4,15 @@ import axios from 'axios';
 const NewsWidget = () => {
   const [topStories, setTopStories] = useState([]);
   const [businessNews, setBusinessNews] = useState([]);
-  // const [entNews, setEntNews] = useState([]);
-  // const [healthNews, setHealthNews] = useState([]);
   const [techNews, setTechNews] = useState([]);
   const [error, setError] = useState(null);
-  // const [selectedCategory, setSelectedCategory] = useState('business');
 
-  const apiKey = 'GxG38yqGeHHWyZP1opxap84H7yS9YfCKotCjSB2F';
-  // const country = 'us';
-  // const pageSize = 10;
+  const apiKey = process.env.REACT_APP_NEWS_API_KEY;
 
   useEffect(() => {
     axios
       .get(
-        `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&locale=us&language=en&exclude_categories=entertainment&exclude_domains=rt.com,benzinga.com,foxnews.com,espn.com`
+        `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&locale=us&language=en&exclude_categories=entertainment,tech&exclude_domains=rt.com,benzinga.com,foxnews.com,espn.com`
       )
       .then((response) => {
         setTopStories(response.data.data); // Update based on the response structure
@@ -84,9 +79,9 @@ const NewsWidget = () => {
           </div>
 
           <div className="divide-y divide-gray-300/50 mt-6">
-            <h1 className="pb-2 text-lg font-semibold">Tech News</h1>
+            <h1 className="pb-2 text-lg font-semibold">Business News</h1>
             <ul className="pt-2">
-              {techNews.map((article, index) => (
+              {businessNews.map((article, index) => (
                 <li key={index} className="mb-4">
                   <a
                     href={article.url}
@@ -103,9 +98,9 @@ const NewsWidget = () => {
           </div>
 
           <div className="divide-y divide-gray-300/50 mt-6">
-            <h1 className="pb-2 text-lg font-semibold">Business News</h1>
+            <h1 className="pb-2 text-lg font-semibold">Tech News</h1>
             <ul className="pt-2">
-              {businessNews.map((article, index) => (
+              {techNews.map((article, index) => (
                 <li key={index} className="mb-4">
                   <a
                     href={article.url}

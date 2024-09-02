@@ -12,8 +12,6 @@ const Home = () => {
         <div className="col-span-1">
           <TodayWidget />
           <WeatherWidget />
-          {/* <StockWidget /> */}
-          {/* <ImageWidget /> */}
         </div>
         <div className="col-span-2">
           <NewsWidget />
