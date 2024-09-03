@@ -1,13 +1,10 @@
 import WeatherWidget from '../components/WeatherWidget';
 import NewsWidget from '../components/NewsWidget';
 import TodayWidget from '../components/TodayWidget';
-// import StockWidget from '../components/StockWidget';
-// import ImageWidget from '../components/ImageWidget';
 
 const Home = () => {
   return (
     <div className="container mx-auto p-6">
-      {/* <h1 className="text-2xl font-bold mb-6">My Dashboard</h1> */}
       <div className="grid grid-cols-3 gap-4 p-4">
         <div className="col-span-1">
           <TodayWidget />

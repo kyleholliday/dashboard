@@ -10,45 +10,65 @@ const NewsWidget = () => {
   const apiKey = process.env.REACT_APP_NEWS_API_KEY;
 
   useEffect(() => {
-    axios
-      .get(
-        `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&locale=us&language=en&exclude_categories=entertainment,tech&exclude_domains=rt.com,benzinga.com,foxnews.com,espn.com`
-      )
-      .then((response) => {
-        setTopStories(response.data.data); // Update based on the response structure
-        console.log(response.data.data);
-        setError(null);
-      })
-      .catch((error) => {
-        setError('Failed to fetch news data. Please try again later.');
-        console.error('Error:', error);
-      });
+    const storedTopStories = localStorage.getItem('topStories');
+    const storedBusinessNews = localStorage.getItem('businessNews');
+    const storedTechNews = localStorage.getItem('techNews');
 
-    axios
-      .get(
-        `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&locale=us&language=en&categories=tech`
-      )
-      .then((response) => {
-        setTechNews(response.data.data); // Update based on the response structure
-        setError(null);
-      })
-      .catch((error) => {
-        setError('Failed to fetch news data. Please try again later.');
-        console.error('Error:', error);
-      });
+    if (storedTopStories && storedBusinessNews && storedTechNews) {
+      setTopStories(JSON.parse(storedTopStories));
+      setBusinessNews(JSON.parse(storedBusinessNews));
+      setTechNews(JSON.parse(storedTechNews));
+    } else {
+      axios
+        .get(
+          `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&locale=us&language=en&exclude_categories=entertainment,tech&exclude_domains=rt.com,benzinga.com,foxnews.com,espn.com`
+        )
+        .then((response) => {
+          setTopStories(response.data.data);
+          localStorage.setItem(
+            'topStories',
+            JSON.stringify(response.data.data)
+          );
+          setError(null);
+        })
+        .catch((error) => {
+          setError('Failed to fetch news data. Please try again later.');
+          console.error('Error:', error);
+        });
 
-    axios
-      .get(
-        `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&locale=us&language=en&categories=business&exclude_domains=benzinga.com`
-      )
-      .then((response) => {
-        setBusinessNews(response.data.data); // Update based on the response structure
-        setError(null);
-      })
-      .catch((error) => {
-        setError('Failed to fetch news data. Please try again later.');
-        console.error('Error:', error);
-      });
+      axios
+        .get(
+          `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&locale=us&language=en&categories=business&exclude_domains=benzinga.com`
+        )
+        .then((response) => {
+          setBusinessNews(response.data.data);
+          localStorage.setItem(
+            'businessNews',
+            JSON.stringify(response.data.data)
+          );
+          setError(null);
+        })
+        .catch((error) => {
+          setError(
+            'Failed to fetch business news data. Please try again later.'
+          );
+          console.error('Error:', error);
+        });
+
+      axios
+        .get(
+          `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&locale=us&language=en&categories=tech`
+        )
+        .then((response) => {
+          setTechNews(response.data.data);
+          localStorage.setItem('techNews', JSON.stringify(response.data.data));
+          setError(null);
+        })
+        .catch((error) => {
+          setError('Failed to fetch tech news data. Please try again later.');
+          console.error('Error:', error);
+        });
+    }
   }, [apiKey]);
 
   return (
@@ -62,57 +82,69 @@ const NewsWidget = () => {
               Today's Top Headlines
             </h1>
             <ul className="pt-2">
-              {topStories.map((article, index) => (
-                <li key={index} className="mb-4">
-                  <a
-                    href={article.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 hover:text-blue-700"
-                  >
-                    {article.title}
-                  </a>
-                  <p className="text-sm text-gray-500">{article.source}</p>
-                </li>
-              ))}
+              {topStories.length ? (
+                topStories.map((article, index) => (
+                  <li key={index} className="mb-4">
+                    <a
+                      href={article.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 hover:text-blue-700"
+                    >
+                      {article.title}
+                    </a>
+                    <p className="text-sm text-gray-500">{article.source}</p>
+                  </li>
+                ))
+              ) : (
+                <p>Loading news...</p>
+              )}
             </ul>
           </div>
 
           <div className="divide-y divide-gray-300/50 mt-6">
             <h1 className="pb-2 text-lg font-semibold">Business News</h1>
             <ul className="pt-2">
-              {businessNews.map((article, index) => (
-                <li key={index} className="mb-4">
-                  <a
-                    href={article.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 hover:text-blue-700"
-                  >
-                    {article.title}
-                  </a>
-                  <p className="text-sm text-gray-500">{article.source}</p>
-                </li>
-              ))}
+              {businessNews.length ? (
+                businessNews.map((article, index) => (
+                  <li key={index} className="mb-4">
+                    <a
+                      href={article.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 hover:text-blue-700"
+                    >
+                      {article.title}
+                    </a>
+                    <p className="text-sm text-gray-500">{article.source}</p>
+                  </li>
+                ))
+              ) : (
+                <p>Loading news...</p>
+              )}
             </ul>
           </div>
 
           <div className="divide-y divide-gray-300/50 mt-6">
             <h1 className="pb-2 text-lg font-semibold">Tech News</h1>
             <ul className="pt-2">
-              {techNews.map((article, index) => (
-                <li key={index} className="mb-4">
-                  <a
-                    href={article.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 hover:text-blue-700"
-                  >
-                    {article.title}
-                  </a>
-                  <p className="text-sm text-gray-500">{article.source}</p>
-                </li>
-              ))}
+              {techNews.length ? (
+                techNews.map((article, index) => (
+                  <li key={index} className="mb-4">
+                    <a
+                      href={article.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 hover:text-blue-700"
+                    >
+                      {article.title}
+                    </a>
+                    <p className="text-sm text-gray-500">{article.source}</p>
+                  </li>
+                ))
+              ) : (
+                <p>Loading news...</p>
+              )}
             </ul>
           </div>
         </div>
